@@ -96,6 +96,15 @@ void initAll(){ //Consider doing everything in grayscale it make it faster
 	imshow_fast(img_ref);
 }
 
+// Show image surprise 
+void imshow_surprise(Mat img){
+	if (enable_show_img){
+		imshow("image", img);
+		cv::waitKey(key_time); 
+	}
+	return;
+//
+
 double angular = 0.0;
 double linear = 0.0;
 
@@ -176,10 +185,13 @@ int main(int argc, char **argv)
 			vel.linear.x = linear;
 			vel_pub.publish(vel);
 
-		}else if(world_state == 8){
+		}else if(world_state == 8){ 
 
 			if (!ranOnce) {
-				// sc.playWave(path_to_sounds + "excited.wav");
+				Mat img_test=imread(ros::package::getPath("mie443_contest3")+"/imgs/meow_surprised_yoga.jpg");
+				imshow_surprise(img_test);
+				ros::Duration(0.5).sleep();
+				sc.playWave(path_to_sounds + "sound.wav");
 				ranOnce=true;
 			}
 
@@ -191,7 +203,10 @@ int main(int argc, char **argv)
 		}else if(world_state == 6){
 
 			if (!ranOnce) {
-				// sc.playWave(path_to_sounds + "excited.wav");
+				Mat img_test=imread(ros::package::getPath("mie443_contest3")+"/imgs/meow_surprised_yoga.jpg");
+				imshow_surprise(img_test);
+				ros::Duration(0.5).sleep();
+				sc.playWave(path_to_sounds + "sound.wav");
 				ranOnce=true;
 			}
 			leftBumper();
@@ -201,7 +216,7 @@ int main(int argc, char **argv)
 		
 		} else if (world_state == 4){
 			if (!ranOnce) {
-				// sc.playWave(path_to_sounds + "excited.wav");
+				sc.playWave(path_to_sounds + "sound.wav");
 				ranOnce=true;
 			}
 			excited();
@@ -269,6 +284,7 @@ void rightBumper() {
         return;
 
     }else {
+	cv::destroyAllWindows();
         world_state=0;
         return;
     }
@@ -291,6 +307,7 @@ void leftBumper() {
         return;
 
     }else {
+	cv::destroyAllWindows();
         world_state=0;
         return; 
     }
